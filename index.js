@@ -30,6 +30,7 @@ client.connect(err => {
       })
   })
 
+
   app.get('/review', (req, res) => {
     reviewCollection.find()
       .toArray((err, items) => {
@@ -82,12 +83,33 @@ client.connect(err => {
 
   app.post('/getOrder', (req, res) => {
     const email = req.body.email;
-    orderCollection.find()
-      .toArray((err, documents) => {
-        res.send(documents)
+    adminCollection.find({ email:email })
+      .toArray((err, admin) => {
+        if (admin.length === 0) {
+          orderCollection.find({email:email })
+            .toArray((err, items) => {
+              res.send(items)
+            })
+        }
+        else {
+          orderCollection.find()
+          .toArray((err, items) => {
+            res.send(items)
+          })
+        }
       })
 
   })
+
+  app.post('/isadmin', (req, res) => {
+    const email = req.body.email;
+    adminCollection.find({ email: email })
+      .toArray((err, admin) => {
+        res.send(admin.length > 0);
+      })
+  })
+
+
 
 
 });
