@@ -109,6 +109,12 @@ client.connect(err => {
       })
   })
 
+  app.delete('/deleteService/:id', (req, res) => {
+    const id = ObjectID(req.params.id);
+    tourCollection.findOneAndDelete({ _id: id })
+        .then(documents => res.send(!!documents.value))
+})
+
 
 
 
