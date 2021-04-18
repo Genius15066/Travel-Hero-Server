@@ -82,7 +82,6 @@ client.connect(err => {
 
   app.post('/getOrder', (req, res) => {
     const email = req.body.email;
-
     orderCollection.find()
       .toArray((err, documents) => {
         res.send(documents)
